@@ -1,3 +1,12 @@
+/* Write a C program which:
+• Prompts the user for an integer array length.
+• Uses the malloc() function to allocate the array.
+• Prompts the user to enter an integer for each array element.
+• Sorts the array in ascending order using Selection Sort.
+• Prints the sorted contents of the array.
+• Frees the memory allocated for the array using the free() function.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// the selection sort source is form https://github.com/KingCoolS520/MyRepos/blob/386c43befc97d3b61a643cb55cbb1707f0ebf22b/2.%E6%8E%92%E5%BA%8F__all/%E6%8E%92%E5%BA%8F/demo01_%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F.c
 void SelectionSort(int *array, int len)
 {
 	int min = 0;	

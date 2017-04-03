@@ -1,0 +1,18 @@
+B&O’H 5.15.
+
+B. For data type float, what lower bound on the CPE is determined by the
+critical path?
+
+(4+3)/3 = 2.3333
+The lower bound on the CPE is determined by 2.3333 for data type float.
+
+C. Assuming similar instruction sequences for the integer code as well, what lower bound on the CPE is determined by the critical path for integer data?
+
+(3+1)/3 = 1.3333
+The lower bound on the CPE is determined by 1.3333 for data type integer.
+
+D. Explain how the two floating-point versions can have CPEs of 3.00, even
+though the multiplication operation requires either 4 or 5 clock cycles.
+
+according to the code :sum = sum +udata[i] * vdata[i],
+Since the multiplication is not influence the other thread(multiplication first), we no need to wait the multiplication in the pipeline.Therefore whether multiplication either 4 or 5 clock cycles, the floating-point will not affect by multiplication. The CPEs always be 3.00.

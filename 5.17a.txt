@@ -1,0 +1,6 @@
+
+A. What factor limits the performance to a CPE of 2.00?
+
+Factor 1: There are two loads for unit throughput that each cycle just load one
+value.
+Factor 2: The multiplication execute once for two cycles.

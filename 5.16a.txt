@@ -1,0 +1,5 @@
+B&O’H 5.16a.
+A. Explain why any version of any inner product procedure cannot achieve a
+CPE less than 2.00.
+
+The data throughput of single load should be 1.00. For this code, we have two loads which means data throughput of loads should be at least 2.00. Therefore, the inner product procedure cannot less than 2.00.

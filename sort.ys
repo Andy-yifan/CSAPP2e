@@ -1,0 +1,116 @@
+		.pos 0
+init:
+		irmovl Stack, %esp     # Set up stack pointer
+		irmovl Stack, %ebp     # Set up base pointer
+		call Main              # Execute main program
+        halt
+        
+        .align 4
+
+array:	
+		.long 0x0004
+		.long 0x0003
+		.long 0x0005
+		.long 0x0001
+		.long 0x0002
+		.long 0x0007
+		.long 0x0008
+		.long 0x0006
+		.long 0x0010
+		.long 0x0009
+	
+Main:	
+	irmovl array, %edi     # address of the first element of a
+	irmovl $10, %esi    #set size	  
+	irmovl $0x1, %eax
+	subl   %eax, %esi     # get last index in a(9)
+	call Selection
+	halt
+	
+
+
+# Selection sort. source: https://github.com/ajettel/AssemblyExamples/blob/master/selection-sort.s
+Selection:
+	pushl  %ebx		#restored
+	pushl  %esi
+  	
+loop: 
+    irmovl $0x0,    %edx
+	subl   %edx,    %esi     #compare last for 0
+	jle    send              # if last < 0, we finished.
+
+    call   Max           # get position of largest element in %eax
+	addl   %eax,    %eax     
+	addl   %eax,    %eax     # this is the max position in bytes
+	addl   %edi,    %eax 	 # address of max pposition	
+
+	rrmovl %esi,    %ecx     # make another copy of last and keep %esi 
+	addl   %ecx,    %ecx     # this is the last position in half-words.
+	addl   %ecx,    %ecx     # this is the last position in bytes
+	addl   %edi,    %ecx 	 # address of last pposition	
+# switch
+	mrmovl (%eax), %edx      # tmp = a[pos]
+	mrmovl (%ecx), %ebx	     # ebx = a[last]
+	rmmovl %edx, (%ecx)	     # a[last] = tmp
+    rmmovl %ebx, (%eax)	     # a[pos] = a[last]
+
+	irmovl $0x1,    %ecx     # we want to compute last-1
+	subl   %ecx,    %esi     # esi is last decrease by 1	
+	jmp    loop
+
+send:	
+    popl   %esi			 #restore the registers
+	popl   %ebx
+	ret
+
+
+.pos 0x300
+
+Max:
+		pushl %ebp			# push the base stack pointer onto the stack
+		rrmovl %esp, %ebp	# make the top pointer the bottom pointer
+		pushl %edi 		#
+		pushl %esi 		# Push registers values onto stack to
+		pushl %ebx 		# be preserved.
+		
+		# setup max
+		rrmovl %esi, %eax
+		addl %eax,%eax      # multiply n by 4
+		addl %eax,%eax
+		addl %edi, %eax		# add a and n = a[n]
+		rrmovl %eax, %ebx	# move the adress of a+n into ebx
+		mrmovl (%ebx), %ebx	# dereference ebx to get the value at a+n (x = a[n])
+		rrmovl %esi, %edx	# pos = n
+while:	
+		#while loop check
+		xorl %eax, %eax
+		subl %eax, %esi		# subtract 0 from n to set flag
+		jle end				# jump to end if less than or equal to 
+		
+		#before if
+		irmovl $1, %eax
+		subl %eax, %esi		# decrement n
+		rrmovl %esi, %eax
+		addl %eax,%eax      # multiply n by 4
+		addl %eax,%eax
+		addl %edi, %eax		# add a and n = a[n]
+		mrmovl (%eax), %eax	# x = a[n]
+	
+		#if statement
+		rrmovl %eax, %ecx	# move max into eax
+		subl %ebx, %eax		# eax = max -x
+		cmovg %ecx, %ebx 	# max = x
+		cmovg %esi, %edx	# pos = n
+		jmp while
+ 
+end:		
+		rrmovl %edx, %eax	# move pos to result register
+		popl %ebx
+		popl %esi
+		popl %edi
+		rrmovl %ebp, %esp
+		popl %ebp
+		ret	
+	
+.pos 0x100
+Stack:		
